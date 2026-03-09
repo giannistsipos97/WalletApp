@@ -1,1 +1,125 @@
-<p>dashboard works!</p>
+<div
+  class="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300"
+>
+  <nav
+    class="p-6 flex justify-between items-center bg-white dark:bg-slate-800 shadow-sm"
+  >
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center border-2 border-emerald-500"
+      >
+        <span class="text-emerald-700 dark:text-emerald-300 font-bold">{{
+          avatarLetters()
+        }}</span>
+      </div>
+      <div>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Welcome back,</p>
+        <h2 class="font-bold text-slate-900 dark:text-white">
+          {{ userProfile()?.name }}
+        </h2>
+      </div>
+    </div>
+
+    <button
+      (click)="logout()"
+      class="p-2 text-slate-400 hover:text-red-500 transition-colors"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+        />
+      </svg>
+    </button>
+  </nav>
+
+  <main class="p-6 space-y-6 max-w-lg mx-auto">
+    <div
+      class="bg-emerald-600 rounded-[2rem] p-8 text-white shadow-2xl shadow-emerald-500/30 relative overflow-hidden"
+    >
+      <div class="relative z-10">
+        <p class="text-emerald-100 text-sm font-medium mb-1">Total Balance</p>
+        <h1 class="text-4xl font-bold mb-8">$2,450.00</h1>
+
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-emerald-100 text-xs uppercase tracking-wider">
+              Income
+            </p>
+            <p class="font-bold">+$3,200</p>
+          </div>
+          <div class="w-px h-8 bg-emerald-500/50"></div>
+          <div>
+            <p
+              class="text-emerald-100 text-xs uppercase tracking-wider text-right"
+            >
+              Expenses
+            </p>
+            <p class="font-bold text-right">-$750</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500 rounded-full opacity-50"
+      ></div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <button
+        class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center gap-2 active:scale-95 transition-all"
+      >
+        <div
+          class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+        </div>
+        <span class="text-sm font-semibold dark:text-white">Add Income</span>
+      </button>
+
+      <button
+        class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center gap-2 active:scale-95 transition-all"
+      >
+        <div
+          class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-orange-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M18 12H6"
+            />
+          </svg>
+        </div>
+        <span class="text-sm font-semibold dark:text-white">Add Expense</span>
+      </button>
+    </div>
+  </main>
+</div>

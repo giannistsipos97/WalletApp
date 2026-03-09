@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User";
+import { authMiddleware } from "../middleware/auth";
 
 const router = express.Router();
 
@@ -60,6 +61,23 @@ router.post("/login", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Server error during login" });
+  }
+});
+
+router.get("/me", authMiddleware, async (req: any, res) => {
+  try {
+    // The authMiddleware has already verified the token
+    // and put the userId into req.user
+    const user = await User.findById(req.user).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error fetching profile" });
   }
 });
 
