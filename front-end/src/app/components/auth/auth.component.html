@@ -1,10 +1,10 @@
 <div
-  class="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center p-6 transition-colors duration-300"
+  class="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center p-6 transition-colors duration-300 relative"
 >
-  @if (view !== "welcome") {
+  @if (!isWelcomePage()) {
     <button
-      (click)="showWelcome()"
-      class="absolute top-6 left-6 text-slate-400 hover:text-green-800 transition-colors"
+      (click)="navigateTo('')"
+      class="absolute top-6 left-6 text-slate-400 dark:text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-500 transition-colors duration-200"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
 
   <button
     (click)="themeService.toggleTheme()"
-    class="absolute top-6 right-6 p-3 rounded-2xl bg-white dark:bg-slate-800 shadow-lg border border-slate-100 dark:border-slate-700 transition-all active:scale-90"
+    class="absolute top-6 right-6 p-3 rounded-2xl bg-white dark:bg-slate-800 shadow-lg border border-slate-100 dark:border-slate-700 transition-all active:scale-90 duration-200"
   >
     @if (themeService.darkMode()) {
       <svg
@@ -57,39 +57,42 @@
   </button>
 
   <div class="w-full max-w-sm">
-    @if (view === "welcome") {
+    @if (isWelcomePage()) {
       <div class="text-center animate-in fade-in zoom-in duration-500">
         <div
-          class="bg-green-800 w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl mx-auto mb-8"
+          class="bg-emerald-600 dark:bg-emerald-600 w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl shadow-emerald-500/50 mx-auto mb-8 transition-colors duration-300"
         >
           <span class="text-white text-4xl font-bold">W</span>
         </div>
-        <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
-          TrackingWallet
+        <h1
+          class="text-4xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight"
+        >
+          WalletApp
         </h1>
-        <p class="text-slate-500 dark:text-slate-400 mb-10 text-lg">
+        <p
+          class="text-slate-500 dark:text-slate-400 mb-10 text-lg leading-relaxed"
+        >
           Your finances, simplified.
         </p>
 
         <div class="space-y-4 w-72 mx-auto">
           <button
-            (click)="showRegister()"
-            class="w-full bg-green-800 hover:bg-green-700 text-white py-4 rounded-2xl font-bold shadow-lg"
+            (click)="navigateTo('register')"
+            class="w-full bg-emerald-600 dark:bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-500/20 active:scale-95 transition-all duration-200"
           >
             Get Started
           </button>
+
           <button
-            (click)="showLogin()"
-            class="w-full bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-500 hover:bg-slate-600 text-slate-900 dark:text-white py-4 rounded-2xl font-bold border border-slate-200 dark:border-slate-700"
+            (click)="navigateTo('login')"
+            class="w-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white py-4 rounded-2xl font-bold border border-slate-200 dark:border-slate-700 active:scale-95 transition-all duration-200 focus:ring-2 focus:ring-emerald-500 outline-none"
           >
             Sign In
           </button>
         </div>
       </div>
-    } @else if (view === "login") {
-      <app-login></app-login>
-    } @else if (view === "register") {
-      <app-register></app-register>
+    } @else {
+      <router-outlet></router-outlet>
     }
   </div>
 </div>

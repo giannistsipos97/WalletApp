@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   private authService = inject(AuthService);
@@ -69,7 +70,8 @@ export class RegisterComponent {
         password: this.password(),
       })
       .subscribe({
-        next: () => this.router.navigate(['/dashboard']),
+        next: () => console.log('Registration successful'),
+        // next: () => this.router.navigate(['/dashboard']),
         error: (err) => this.errorMessage.set(err.error?.message || 'Error'),
       });
   }
