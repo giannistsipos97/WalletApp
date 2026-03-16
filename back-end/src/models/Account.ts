@@ -1,25 +1,13 @@
-import { Schema, model } from "mongoose";
+import { model, Schema } from "mongoose";
 
 const accountSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    balance: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    color: {
-      type: String,
-      default: "bg-indigo-600", // We store Tailwind classes directly!
-    },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    name: { type: String, required: true, trim: true },
+    balance: { type: Number, required: true, default: 0 },
+    color: { type: String, default: "bg-indigo-600" },
   },
-  {
-    timestamps: true, // This automatically adds 'createdAt' and 'updatedAt'
-  },
+  { timestamps: true },
 );
 
 export const Account = model("Account", accountSchema);

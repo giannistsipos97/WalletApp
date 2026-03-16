@@ -1,9 +1,10 @@
-import { Schema, model, Document } from "mongoose";
+import { model, Schema } from "mongoose";
 
-// 2. Transaction Schema
 const transactionSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   accountId: { type: Schema.Types.ObjectId, ref: "Account", required: true },
   amount: { type: Number, required: true },
+  type: { type: String, enum: ["income", "expense"], required: true },
   category: { type: String, required: true },
   note: String,
   date: { type: Date, default: Date.now },

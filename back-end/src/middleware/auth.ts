@@ -12,7 +12,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
       token,
       process.env.JWT_SECRET || "SUPER_SECRET_KEY_CHANGEME",
     );
-    req.user = decoded.userId; // We attach the user ID to the request object
+    req.user = { id: decoded.userId };
     next();
   } catch (err) {
     res.status(401).json({ message: "Token is not valid" });
