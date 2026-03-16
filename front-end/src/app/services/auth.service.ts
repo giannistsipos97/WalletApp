@@ -49,7 +49,6 @@ export class AuthService {
 
   private saveSession(response: any) {
     localStorage.setItem('token', response.token);
-    this.userSubject.next(response.user);
     this.currentUser.set(response.user);
     this.isAuthenticated.set(true);
   }

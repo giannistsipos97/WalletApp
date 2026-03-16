@@ -1,10 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('wallet_token');
+  const token = localStorage.getItem('token');
 
-  // If we have a token, clone the request and add the Authorization header
-  if (token) {
+  if (token && !req.url.includes('/login') && !req.url.includes('/signup')) {
     const cloned = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,

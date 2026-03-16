@@ -1,16 +1,25 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable, signal, effect } from '@angular/core';
 
-import { ThemeService } from './theme.service';
+@Injectable({
+  providedIn: 'root',
+})
+export class ThemeService {
+  isDarkMode = signal<boolean>(localStorage.getItem('theme') === 'dark');
 
-describe('ThemeService', () => {
-  let service: ThemeService;
+  constructor() {
+    effect(() => {
+      const mode = this.isDarkMode() ? 'dark' : 'light';
+      localStorage.setItem('theme', mode);
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ThemeService);
-  });
+      if (this.isDarkMode()) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
+  }
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  toggleTheme() {
+    this.isDarkMode.update((val) => !val);
+  }
+}
