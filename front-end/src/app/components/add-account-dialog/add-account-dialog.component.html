@@ -1,0 +1,92 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+>
+  <div
+    class="bg-white dark:bg-slate-800 w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl animate-in fade-in zoom-in duration-300"
+  >
+    <div class="flex justify-between items-center mb-8">
+      <h3 class="text-2xl font-black text-slate-900 dark:text-white">
+        New Account
+      </h3>
+      <button
+        (click)="close.emit()"
+        class="fas fa-times text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+      ></button>
+    </div>
+
+    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label
+          class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+          >Account Name</label
+        >
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="e.g. Main Savings"
+          class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all"
+        />
+      </div>
+
+      <div>
+        <label
+          class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+          >Initial Balance</label
+        >
+        <div class="relative">
+          <span
+            class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400"
+            >€</span
+          >
+          <input
+            type="number"
+            formControlName="balance"
+            class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl p-4 pl-10 focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all"
+          />
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <label
+          class="block text-xs font-bold uppercase tracking-[0.2em] text-slate-400"
+        >
+          Choose Style
+        </label>
+
+        <div class="flex flex-wrap gap-4">
+          @for (color of colorPresets; track color.class) {
+            <button
+              type="button"
+              (click)="accountForm.patchValue({ color: color.class })"
+              [class]="color.class"
+              class="w-12 h-12 rounded-2xl transition-all duration-200 flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 relative"
+            >
+              @if (accountForm.get("color")?.value === color.class) {
+                <div
+                  class="absolute inset-0 border-4 border-white rounded-2xl"
+                ></div>
+              }
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="flex gap-4 pt-4">
+        <button
+          type="button"
+          (click)="close.emit()"
+          class="flex-1 py-4 font-bold text-slate-500 hover:text-slate-700 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="accountForm.invalid"
+          class="flex-1 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95"
+        >
+          Create Account
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

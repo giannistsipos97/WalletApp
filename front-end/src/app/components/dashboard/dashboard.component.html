@@ -29,113 +29,102 @@
         "
       >
         @if (themeService.isDarkMode()) {
-          <span class="text-xl">☀️</span>
+          <!-- <span class="text-xl">☀️</span> -->
+          <i class="fa-solid fa-sun text-yellow-500 text-2xl"></i>
         } @else {
-          <span class="text-xl">🌙</span>
+          <!-- <span class="text-xl">🌙</span> -->
+          <i class="fa-solid fa-moon text-indigo-800 text-2xl"></i>
         }
       </button>
 
       <button
         (click)="logout()"
-        class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-          />
-        </svg>
-      </button>
+        class="p-2 fa-solid fa-right-from-bracket text-2xl text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors"
+      ></button>
     </div>
   </nav>
 
-  <main class="p-6 space-y-6 max-w-lg mx-auto">
+  <main class="p-6 space-y-8 w-full">
+    <div class="flex justify-between items-center px-2">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+        Your Accounts <i class="fa-solid fa-building-columns"></i>
+      </h2>
+
+      <button
+        (click)="openAddAccountDialog()"
+        class="text-white font-bold bg-green-600 border border-emerald-600 hover:bg-green-800 hover:border-emerald-800 transition-colors flex items-center p-1 rounded-lg gap-1"
+      >
+        <i class="fa-solid fa-plus"></i> Add New
+      </button>
+    </div>
+
     <div
-      class="bg-emerald-600 rounded-[2rem] p-8 text-white shadow-2xl shadow-emerald-500/30 relative overflow-hidden"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center justify-center"
     >
-      <div class="relative z-10">
-        <p class="text-emerald-100 text-sm font-medium mb-1">Total Balance</p>
-        <h1 class="text-4xl font-bold mb-8">$2,450.00</h1>
-
-        <div class="flex justify-between items-center">
-          <div>
-            <p class="text-emerald-100 text-xs uppercase tracking-wider">
-              Income
-            </p>
-            <p class="font-bold">+$3,200</p>
-          </div>
-          <div class="w-px h-8 bg-emerald-500/50"></div>
-          <div>
-            <p
-              class="text-emerald-100 text-xs uppercase tracking-wider text-right"
+      @if (accountService.accounts$ | async; as accounts) {
+        @if (accounts.length === 0) {
+          <div
+            class="col-span-full w-full max-w-2xl py-16 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[2.5rem] bg-white/50 dark:bg-slate-800/50"
+          >
+            <div
+              class="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4 text-2xl"
             >
-              Expenses
+              🏦
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 font-medium mb-4">
+              No accounts found
             </p>
-            <p class="font-bold text-right">-$750</p>
+            <button
+              (click)="openAddAccountDialog()"
+              class="bg-emerald-500 text-white px-6 py-2.5 rounded-2xl font-bold shadow-lg shadow-emerald-500/20"
+            >
+              Create Your First Account
+            </button>
           </div>
-        </div>
-      </div>
-      <div
-        class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500 rounded-full opacity-50"
-      ></div>
+        } @else {
+          @for (acc of accounts; track acc._id) {
+            <div class="flex flex-col gap-4 w-full max-w-[320px]">
+              <div
+                (click)="selectedAccount.set(acc)"
+                [class]="acc.color"
+                [class.ring-4]="selectedAccount()?._id === acc._id"
+                class="account-card aspect-square p-8 rounded-[2.5rem] text-white cursor-pointer transition-all duration-300 shadow-xl ring-emerald-500 ring-offset-4 dark:ring-offset-slate-900 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-2"
+              >
+                <div class="relative z-10">
+                  <div class="flex justify-between items-start">
+                    <span
+                      class="text-s uppercase tracking-widest font-bold opacity-70"
+                      >{{ acc.name }}</span
+                    >
+                  </div>
+                  <h3 class="text-4xl font-black mt-4">
+                    €{{ acc.balance | number: "1.2-2" }}
+                  </h3>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <button
+                    class="flex items-center justify-center gap-2 p-2 bg-yellow-600 rounded-2xl border border-yellow-600 hover:border-emerald-500 transition-all active:scale-95 shadow-sm"
+                  >
+                    <span class="text-emerald-500 text-2xl font-bold">+</span>
+                    <span class="text-s font-bold text-white">Income</span>
+                  </button>
+                  <button
+                    class="flex items-center justify-center gap-2 p-2 bg-red-800 rounded-2xl border border-red-800 hover:border-red-950 transition-all active:scale-95 shadow-sm"
+                  >
+                    <span class="text-rose-500 text-2xl font-bold">-</span>
+                    <span class="text-s font-bold text-white">Expense</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      }
     </div>
-
-    <div class="grid grid-cols-2 gap-4">
-      <button
-        class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center gap-2 active:scale-95 transition-all"
-      >
-        <div
-          class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-        </div>
-        <span class="text-sm font-semibold dark:text-white">Add Income</span>
-      </button>
-
-      <button
-        class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center gap-2 active:scale-95 transition-all"
-      >
-        <div
-          class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-orange-600"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M18 12H6"
-            />
-          </svg>
-        </div>
-        <span class="text-sm font-semibold dark:text-white">Add Expense</span>
-      </button>
-    </div>
+    @if (isModalOpen()) {
+      <app-add-account-dialog
+        (close)="isModalOpen.set(false)"
+      ></app-add-account-dialog>
+    }
   </main>
 </div>
