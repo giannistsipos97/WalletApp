@@ -5,6 +5,7 @@ import { connectDB } from "./config/db";
 import authRoutes from "./routes/auth";
 import accountRoutes from "./routes/accountRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/accounts", accountRoutes);
 
 app.use("/api/transactions", transactionRoutes);
+
+app.use("/api/categories", categoryRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
