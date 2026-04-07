@@ -6,11 +6,16 @@ import { AccountService } from '../../services/account.service';
 import { CommonModule } from '@angular/common';
 import { Account } from '../../models/Account';
 import { AddAccountDialogComponent } from '../add-account-dialog/add-account-dialog.component';
+import { AddTransactionDialogComponent } from '../add-transaction-dialog/add-transaction-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, AddAccountDialogComponent],
+  imports: [
+    CommonModule,
+    AddAccountDialogComponent,
+    AddTransactionDialogComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -22,6 +27,9 @@ export class DashboardComponent implements OnInit {
   userProfile = signal<User | null>(null);
   selectedAccount = signal<Account | null>(null);
   isModalOpen = signal(false);
+  transactionModalOpen = signal(false);
+  activeTransactionType = signal<'income' | 'expense'>('expense');
+  transactionAccount = signal<Account | null>(null);
 
   // Computed signal: it watches userProfile and updates automatically
   avatarLetters = computed(() => {
@@ -63,6 +71,16 @@ export class DashboardComponent implements OnInit {
 
   openAddAccountDialog() {
     this.isModalOpen.set(true);
+  }
+
+  openTransaction(acc: Account, type: 'income' | 'expense') {
+    this.transactionAccount.set(acc);
+    this.activeTransactionType.set(type);
+    this.transactionModalOpen.set(true);
+  }
+
+  handleTransaction(event: any) {
+    console.log('Transaction saved:', event);
   }
 
   logout() {

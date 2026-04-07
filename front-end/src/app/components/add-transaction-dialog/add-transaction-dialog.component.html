@@ -1,0 +1,131 @@
+<div
+  class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+>
+  <div
+    class="bg-white dark:bg-slate-800 w-full max-w-md rounded-[2.5rem] shadow-2xl relative animate-in fade-in zoom-in duration-200"
+  >
+    <!-- Header -->
+    <div class="p-8 pb-0 flex justify-between items-center">
+      <div>
+        <h3
+          class="text-2xl font-black text-slate-900 dark:text-white capitalize"
+        >
+          Add
+          <!-- Dynamic Color for the word Income/Expense -->
+          <span
+            [class]="type === 'income' ? 'text-emerald-500' : 'text-rose-500'"
+          >
+            {{ type }}
+          </span>
+        </h3>
+
+        <p
+          class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1"
+        >
+          Target: {{ account.name }}
+        </p>
+
+        <!-- Balanced text color for both light/dark modes -->
+        <div
+          class="mt-2 inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900"
+        >
+          <span
+            class="text-[13px] font-black text-slate-500 dark:text-slate-400 uppercase mr-1"
+            >Balance:
+          </span>
+          <span class="text-l font-bold text-slate-700 dark:text-slate-200">
+            {{ account.balance | currency: "EUR" : "symbol" }}
+          </span>
+        </div>
+      </div>
+
+      <button
+        (click)="close.emit()"
+        class="text-slate-400 hover:text-slate-600 p-2 transition-colors"
+      >
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+
+    <form
+      [formGroup]="transactionForm"
+      (ngSubmit)="onSubmit()"
+      class="p-8 space-y-5"
+    >
+      <!-- Amount Input -->
+      <div class="space-y-2">
+        <label
+          class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400"
+          >Amount</label
+        >
+        <div class="relative">
+          <span
+            class="absolute left-5 top-1/2 -translate-y-1/2 font-bold"
+            [class]="type === 'income' ? 'text-emerald-500' : 'text-rose-500'"
+            >€</span
+          >
+          <input
+            type="number"
+            formControlName="amount"
+            step="0.01"
+            class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl p-5 pl-10 text-2xl font-black dark:text-white focus:ring-2 transition-all"
+            [class.focus:ring-emerald-500]="type === 'income'"
+            [class.focus:ring-rose-500]="type === 'expense'"
+          />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="space-y-2">
+        <label
+          class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400"
+          >Description</label
+        >
+        <input
+          type="text"
+          formControlName="description"
+          placeholder="What was this for?"
+          class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl p-4 dark:text-white focus:ring-2 focus:ring-slate-400 transition-all"
+        />
+      </div>
+
+      <!-- Category Picker -->
+      <div class="space-y-2">
+        <label
+          class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400"
+          >Category</label
+        >
+        <select
+          formControlName="category"
+          class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl p-4 dark:text-white focus:ring-2 focus:ring-slate-400 transition-all"
+        >
+          @for (category of categories(); track category._id) {
+            <option [value]="category.name">
+              {{ category.name }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex gap-4 pt-4">
+        <button
+          type="button"
+          (click)="close.emit()"
+          class="flex-1 py-4 font-bold text-slate-400"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="transactionForm.invalid"
+          class="flex-1 text-white py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-95 disabled:opacity-50"
+          [class.bg-emerald-500]="type === 'income'"
+          [class.bg-rose-500]="type === 'expense'"
+        >
+          Confirm
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
