@@ -72,88 +72,75 @@
     <div
       class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8 justify-center"
     >
-      @if (accountService.accounts$ | async; as accounts) {
-        @if (accounts.length === 0) {
+      @if (accounts().length === 0) {
+        <div
+          class="col-span-full w-full max-w-2xl py-16 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[2.5rem] bg-white/50 dark:bg-slate-800/50"
+        >
           <div
-            class="col-span-full w-full max-w-2xl py-16 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[2.5rem] bg-white/50 dark:bg-slate-800/50"
+            class="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4 text-2xl"
           >
-            <div
-              class="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4 text-2xl"
-            >
-              🏦
-            </div>
-            <p class="text-slate-500 dark:text-slate-400 font-medium mb-4">
-              No accounts found
-            </p>
-            <button
-              (click)="openAddAccountDialog()"
-              class="bg-emerald-500 text-white px-6 py-2.5 rounded-2xl font-bold shadow-lg shadow-emerald-500/20"
-            >
-              Create Your First Account
-            </button>
+            🏦
           </div>
-        } @else {
-          @for (acc of accounts; track acc._id) {
-            <div class="flex flex-col gap-3 w-full">
-              <!-- Square Card -->
-              <div
-                (click)="selectedAccount.set(acc)"
-                [class]="acc.color"
-                [class.ring-4]="selectedAccount()?._id === acc._id"
-                class="account-card aspect-square p-4 sm:p-8 rounded-[1.8rem] sm:rounded-[2.5rem] text-white cursor-pointer transition-all duration-300 shadow-xl ring-emerald-500 ring-offset-4 dark:ring-offset-slate-900 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 sm:hover:-translate-y-2"
-              >
-                <!-- Decorative background shape -->
-                <div
-                  class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full group-hover:scale-110 transition-transform"
-                ></div>
-
-                <div class="relative z-10">
-                  <div class="flex justify-between items-start">
-                    <span
-                      class="text-[10px] sm:text-xs uppercase tracking-widest font-bold opacity-80 truncate pr-2"
-                    >
-                      {{ acc.name }}
-                    </span>
-                  </div>
-                  <h3
-                    class="text-lg sm:text-4xl font-black mt-1 sm:mt-4 truncate"
+          <p class="text-slate-500 dark:text-slate-400 font-medium mb-4">
+            No accounts found
+          </p>
+          <button
+            (click)="openAddAccountDialog()"
+            class="bg-emerald-500 text-white px-6 py-2.5 rounded-2xl font-bold shadow-lg shadow-emerald-500/20"
+          >
+            Create Your First Account
+          </button>
+        </div>
+      } @else {
+        @for (acc of accounts(); track acc._id) {
+          <div class="flex flex-col gap-3 w-full">
+            <!-- Square Card -->
+            <div
+              (click)="selectedAccount.set(acc)"
+              [class]="acc.color"
+              [class.ring-4]="selectedAccount()?._id === acc._id"
+              class="account-card aspect-square p-4 sm:p-8 rounded-[1.8rem] sm:rounded-[2.5rem] text-white cursor-pointer transition-all duration-300 shadow-xl ring-emerald-500 ring-offset-4 dark:ring-offset-slate-900 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 sm:hover:-translate-y-2"
+            >
+              <div class="relative z-10">
+                <div class="flex justify-between items-start">
+                  <span
+                    class="text-[10px] sm:text-xs uppercase tracking-widest font-bold opacity-80 truncate pr-2"
                   >
-                    €{{ acc.balance | number: "1.2-2" }}
-                  </h3>
+                    {{ acc.name }}
+                  </span>
                 </div>
-
-                <!-- Action Buttons inside the card area to keep the square shape clean -->
-                <div
-                  class="grid grid-cols-1 sm:grid-cols-2 gap-2 relative z-10"
+                <h3
+                  class="text-lg sm:text-4xl font-black mt-1 sm:mt-4 truncate"
                 >
-                  <button
-                    class="flex items-center justify-center gap-1 sm:gap-2 p-2 sm:p-2.5 bg-white/20 backdrop-blur-md rounded-xl border border-white/10 hover:bg-white/30 transition-all active:scale-95"
-                    (click)="openTransaction(acc, 'income')"
+                  €{{ acc.balance | number: "1.2-2" }}
+                </h3>
+              </div>
+
+              <!-- Action Buttons inside the card area to keep the square shape clean -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 relative z-10">
+                <button
+                  class="flex items-center justify-center gap-1 sm:gap-2 p-2 sm:p-2.5 bg-white/20 backdrop-blur-md rounded-xl border border-white/10 hover:bg-white/30 transition-all active:scale-95"
+                  (click)="openTransaction(acc, 'income')"
+                >
+                  <span class="text-white text-sm sm:text-lg font-bold">+</span>
+                  <span
+                    class="text-[9px] sm:text-xs font-bold text-white uppercase tracking-tighter sm:tracking-normal"
+                    >Income</span
                   >
-                    <span class="text-white text-sm sm:text-lg font-bold"
-                      >+</span
-                    >
-                    <span
-                      class="text-[9px] sm:text-xs font-bold text-white uppercase tracking-tighter sm:tracking-normal"
-                      >Income</span
-                    >
-                  </button>
-                  <button
-                    class="flex items-center justify-center gap-1 sm:gap-2 p-2 sm:p-2.5 bg-black/10 backdrop-blur-md rounded-xl border border-white/5 hover:bg-black/20 transition-all active:scale-95"
-                    (click)="openTransaction(acc, 'expense')"
+                </button>
+                <button
+                  class="flex items-center justify-center gap-1 sm:gap-2 p-2 sm:p-2.5 bg-black/10 backdrop-blur-md rounded-xl border border-white/5 hover:bg-black/20 transition-all active:scale-95"
+                  (click)="openTransaction(acc, 'expense')"
+                >
+                  <span class="text-white text-sm sm:text-lg font-bold">-</span>
+                  <span
+                    class="text-[9px] sm:text-xs font-bold text-white uppercase tracking-tighter sm:tracking-normal"
+                    >Expense</span
                   >
-                    <span class="text-white text-sm sm:text-lg font-bold"
-                      >-</span
-                    >
-                    <span
-                      class="text-[9px] sm:text-xs font-bold text-white uppercase tracking-tighter sm:tracking-normal"
-                      >Expense</span
-                    >
-                  </button>
-                </div>
+                </button>
               </div>
             </div>
-          }
+          </div>
         }
       }
     </div>
@@ -170,7 +157,7 @@
         [account]="transactionAccount()!"
         [type]="activeTransactionType()"
         (close)="transactionModalOpen.set(false)"
-        (saved)="handleTransaction($event)"
+        (transactionSuccess)="updateBalance($event)"
       ></app-add-transaction-dialog>
     }
   </main>

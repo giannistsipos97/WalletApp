@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit {
   userProfile = signal<User | null>(null);
   selectedAccount = signal<Account | null>(null);
   isModalOpen = signal(false);
+  accounts = signal<Account[]>([]);
   transactionModalOpen = signal(false);
   activeTransactionType = signal<'income' | 'expense'>('expense');
   transactionAccount = signal<Account | null>(null);
@@ -63,6 +64,7 @@ export class DashboardComponent implements OnInit {
 
   loadAccounts() {
     this.accountService.getAccounts().subscribe((accounts) => {
+      this.accounts.set(accounts);
       if (accounts.length > 0 && !this.selectedAccount()) {
         this.selectedAccount.set(accounts[0]);
       }
@@ -79,8 +81,14 @@ export class DashboardComponent implements OnInit {
     this.transactionModalOpen.set(true);
   }
 
-  handleTransaction(event: any) {
-    console.log('Transaction saved:', event);
+  updateBalance(updatedAccount: Account) {
+    this.accounts.update((accs) =>
+      accs.map((a) => (a._id === updatedAccount._id ? updatedAccount : a)),
+    );
+
+    if (this.selectedAccount()?._id === updatedAccount._id) {
+      this.selectedAccount.set(updatedAccount);
+    }
   }
 
   logout() {

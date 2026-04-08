@@ -70,7 +70,6 @@ export class RegisterComponent {
         password: this.password(),
       })
       .subscribe({
-        next: () => console.log('Registration successful'),
         // next: () => this.router.navigate(['/dashboard']),
         error: (err) => this.errorMessage.set(err.error?.message || 'Error'),
       });

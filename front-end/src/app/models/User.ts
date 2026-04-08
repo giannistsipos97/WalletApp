@@ -1,6 +1,6 @@
 export interface User {
-  id: string; // MongoDB's _id usually comes back as 'id' or '_id'
+  _id: string;
   name: string;
   email: string;
-  createdAt?: Date; // Optional field
+  createdAt?: Date;
 }
