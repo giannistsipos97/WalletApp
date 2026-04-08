@@ -5,8 +5,9 @@ const transactionSchema = new Schema({
   accountId: { type: Schema.Types.ObjectId, ref: "Account", required: true },
   amount: { type: Number, required: true },
   type: { type: String, enum: ["income", "expense"], required: true },
-  category: { type: String, required: true },
-  note: String,
+  // Reference allows for .populate()
+  category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+  description: String,
   date: { type: Date, default: Date.now },
 });
 

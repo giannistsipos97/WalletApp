@@ -5,32 +5,37 @@ import { Account } from "../models/Account";
 const router = Router();
 
 router.post("/", async (req: Request, res: Response) => {
-  const { accountId, amount, type, description, category } = req.body;
+  const { userId, accountId, amount, type, description, category, date } =
+    req.body;
 
   try {
-    const newTransaction = new Transaction({
+    // 1. Save Transaction
+    let transaction = new Transaction({
+      userId,
       accountId,
       amount,
       type,
       description,
-      category,
+      category: category._id,
+      date,
     });
-    await newTransaction.save();
 
-    // If expense, subtract. If income, add.
-    const adjustment = type === "expense" ? -amount : amount;
+    await transaction.save();
 
+    // 2. Populate for the frontend
+    transaction = await transaction.populate("category");
+
+    // 3. Update Account
+    const change = type === "expense" ? -amount : amount;
     const updatedAccount = await Account.findByIdAndUpdate(
       accountId,
-      { $inc: { balance: adjustment } },
+      { $inc: { balance: change } },
       { new: true },
     );
 
-    res.status(201).json({
-      message: "Transaction successful",
-      account: updatedAccount,
-    });
+    res.status(201).json({ transaction, account: updatedAccount });
   } catch (err: any) {
+    console.error(err);
     res.status(400).json({ message: err.message });
   }
 });
