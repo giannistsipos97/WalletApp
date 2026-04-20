@@ -4,6 +4,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { authGuard, guestGuard } from './guards/auth.guard';
+import { AccountDetailsComponent } from './components/account-details/account-details.component';
 
 export const routes: Routes = [
   {
@@ -19,5 +20,6 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard],
   },
+  { path: 'account/:id', component: AccountDetailsComponent },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];

@@ -1,0 +1,198 @@
+<div
+  class="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300 pb-20"
+>
+  <nav
+    class="p-6 flex items-center justify-between bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-50"
+  >
+    <div class="flex items-center gap-4">
+      <button
+        routerLink="/dashboard"
+        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-all group"
+      >
+        <i
+          class="fa-solid fa-arrow-left text-slate-600 dark:text-slate-300 group-hover:-translate-x-1 transition-transform"
+        ></i>
+      </button>
+      <div>
+        <h1
+          class="text-lg font-bold text-slate-900 dark:text-white leading-tight"
+        >
+          Account Details
+        </h1>
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          View your activity and balance
+        </p>
+      </div>
+    </div>
+
+    <button class="p-2 text-slate-400 hover:text-emerald-500 transition-colors">
+      <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+    </button>
+  </nav>
+
+  <main class="max-w-4xl mx-auto p-4 sm:p-8 space-y-8">
+    @if (account(); as acc) {
+      <div
+        [class]="acc.color"
+        class="p-8 sm:p-12 rounded-[2.5rem] text-white shadow-2xl shadow-emerald-500/20 relative overflow-hidden transition-all hover:scale-[1.01]"
+      >
+        <div class="relative z-10">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fa-solid fa-building-columns text-xs"></i>
+            <span
+              class="text-xs uppercase tracking-widest font-bold opacity-80"
+            >
+              {{ acc.name }}
+            </span>
+          </div>
+
+          <div class="flex flex-row items-center gap-4 group">
+            <h2
+              class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-none"
+            >
+              €{{ acc.balance | number: "1.2-2" }}
+            </h2>
+
+            <button
+              (click)="showEditModal.set(true)"
+              class="w-10 h-10 mt-2 flex-shrink-0 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-xl border border-white/20"
+            >
+              <i class="fa-solid fa-pen text-white text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute right-10 bottom-0 w-32 h-32 bg-black/10 rounded-full blur-2xl"
+        ></div>
+      </div>
+    } @else {
+      <div
+        class="w-full h-48 bg-slate-200 dark:bg-slate-800 animate-pulse rounded-[2.5rem]"
+      ></div>
+    }
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div
+        class="bg-white dark:bg-slate-800 p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-700 group hover:border-emerald-500/30 transition-colors"
+      >
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-500"
+          >
+            <i class="fa-solid fa-arrow-down text-sm"></i>
+          </div>
+          <span
+            class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider"
+            >Total Income</span
+          >
+        </div>
+        <p class="text-2xl font-black text-emerald-500">
+          + {{ summary()?.income | number: "1.2-2" }}€
+        </p>
+      </div>
+
+      <div
+        class="bg-white dark:bg-slate-800 p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-700 group hover:border-red-500/30 transition-colors"
+      >
+        <div class="flex items-center gap-3 mb-2">
+          <div class="p-2 bg-red-50 dark:bg-red-900/30 rounded-lg text-red-500">
+            <i class="fa-solid fa-arrow-up text-sm"></i>
+          </div>
+          <span
+            class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider"
+            >Total Expenses</span
+          >
+        </div>
+        <p class="text-2xl font-black text-red-500">
+          - {{ summary()?.expenses | number: "1.2-2" }}€
+        </p>
+      </div>
+    </div>
+
+    <section class="space-y-4">
+      <div class="flex items-center justify-between px-2">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+          Recent Transactions
+        </h3>
+        <button class="text-emerald-500 text-xs font-bold hover:underline">
+          See All
+        </button>
+      </div>
+
+      <div
+        class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden"
+      >
+        @for (trans of transactions(); track trans._id) {
+          <div
+            class="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all cursor-pointer group"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                [class]="trans.category?.color || 'bg-slate-100 text-slate-600'"
+                class="w-12 h-12 bg-slate-200 rounded-2xl flex items-center justify-center text-lg"
+              >
+                <i
+                  class="fa-solid"
+                  [class]="
+                    trans.type === 'income' ? 'fa-wallet' : 'fa-cart-shopping'
+                  "
+                ></i>
+              </div>
+
+              <div>
+                <p
+                  class="font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors"
+                >
+                  {{ trans.category?.name }}({{ trans.description }})
+                </p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">
+                  {{ trans.date | date: "longDate" }}
+                </p>
+              </div>
+            </div>
+
+            <div class="text-right">
+              <p
+                [class]="
+                  trans.type === 'income' ? 'text-emerald-500' : 'text-red-500'
+                "
+                class="font-black text-lg"
+              >
+                {{ trans.type === "income" ? "+" : "-" }}€{{
+                  trans.amount | number: "1.2-2"
+                }}
+              </p>
+            </div>
+          </div>
+        } @empty {
+          <div
+            class="p-20 text-center flex flex-col items-center justify-center"
+          >
+            <div
+              class="w-20 h-20 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4 text-3xl opacity-50"
+            >
+              🧾
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">
+              No activity recorded yet.
+            </p>
+            <p class="text-xs text-slate-400 mt-1">
+              Transactions for this account will appear here.
+            </p>
+          </div>
+        }
+      </div>
+    </section>
+    @if (showEditModal()) {
+      <app-edit-balance-modal
+        [account]="account()!"
+        (close)="showEditModal.set(false)"
+        (updated)="handleBalanceUpdate($event)"
+      />
+    }
+  </main>
+</div>

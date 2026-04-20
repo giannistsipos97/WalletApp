@@ -28,6 +28,22 @@ export class AccountService {
     );
   }
 
+  getAccountById(
+    id: string,
+  ): Observable<{ account: Account; transactions: any[]; summary: any }> {
+    return this.http.get<{
+      account: Account;
+      transactions: any[];
+      summary: any;
+    }>(`${this.apiUrl}/${id}`);
+  }
+
+  updateBalance(id: string, newBalance: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/updateBalance/${id}`, {
+      balance: newBalance,
+    });
+  }
+
   // Helper to get the current value without an async subscription
   get currentAccountsValue() {
     return this.accountsSubject.value;

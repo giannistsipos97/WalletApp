@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Account } from '../../models/Account';
 import { AddAccountDialogComponent } from '../add-account-dialog/add-account-dialog.component';
 import { AddTransactionDialogComponent } from '../add-transaction-dialog/add-transaction-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
   authService = inject(AuthService);
   themeService = inject(ThemeService);
   accountService = inject(AccountService);
+  router = inject(Router);
 
   userProfile = signal<User | null>(null);
   selectedAccount = signal<Account | null>(null);
@@ -89,6 +91,10 @@ export class DashboardComponent implements OnInit {
     if (this.selectedAccount()?._id === updatedAccount._id) {
       this.selectedAccount.set(updatedAccount);
     }
+  }
+
+  viewAccountDetails(id: string) {
+    this.router.navigate(['/account', id]);
   }
 
   logout() {
