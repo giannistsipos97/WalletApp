@@ -10,7 +10,7 @@ import { Router, RouterModule } from '@angular/router';
   selector: 'app-auth',
   standalone: true,
   // Make sure to add the components here!
-  imports: [CommonModule, LoginComponent, RegisterComponent, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
@@ -18,9 +18,6 @@ export class AuthComponent {
   public themeService = inject(ThemeService);
 
   private router = inject(Router);
-
-  // We check the URL to decide if we should show the "Welcome" buttons
-  // or just show the nested route (Login/Register)
   isWelcomePage(): boolean {
     return this.router.url === '/auth';
   }

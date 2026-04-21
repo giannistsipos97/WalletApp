@@ -1,35 +1,6 @@
 <div
-  class="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300 pb-20"
+  class="min-h-full bg-slate-50 dark:bg-slate-900 transition-colors duration-300 pb-20"
 >
-  <nav
-    class="p-6 flex items-center justify-between bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-50"
-  >
-    <div class="flex items-center gap-4">
-      <button
-        routerLink="/dashboard"
-        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-all group"
-      >
-        <i
-          class="fa-solid fa-arrow-left text-slate-600 dark:text-slate-300 group-hover:-translate-x-1 transition-transform"
-        ></i>
-      </button>
-      <div>
-        <h1
-          class="text-lg font-bold text-slate-900 dark:text-white leading-tight"
-        >
-          Account Details
-        </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400">
-          View your activity and balance
-        </p>
-      </div>
-    </div>
-
-    <button class="p-2 text-slate-400 hover:text-emerald-500 transition-colors">
-      <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
-    </button>
-  </nav>
-
   <main class="max-w-4xl mx-auto p-4 sm:p-8 space-y-8">
     @if (account(); as acc) {
       <div

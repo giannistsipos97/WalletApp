@@ -27,7 +27,7 @@
     (click)="themeService.toggleTheme()"
     class="absolute top-6 right-6 p-3 rounded-2xl bg-white dark:bg-slate-800 shadow-lg border border-slate-100 dark:border-slate-700 transition-all active:scale-90 duration-200"
   >
-    @if (themeService.darkMode()) {
+    @if (themeService.isDarkMode()) {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 text-yellow-400"

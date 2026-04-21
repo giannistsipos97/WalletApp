@@ -8,6 +8,7 @@ import { Account } from '../../models/Account';
 import { AddAccountDialogComponent } from '../add-account-dialog/add-account-dialog.component';
 import { AddTransactionDialogComponent } from '../add-transaction-dialog/add-transaction-dialog.component';
 import { Router } from '@angular/router';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,7 @@ export class DashboardComponent implements OnInit {
   themeService = inject(ThemeService);
   accountService = inject(AccountService);
   router = inject(Router);
+  headerService = inject(HeaderService);
 
   userProfile = signal<User | null>(null);
   selectedAccount = signal<Account | null>(null);
@@ -34,19 +36,6 @@ export class DashboardComponent implements OnInit {
   activeTransactionType = signal<'income' | 'expense'>('expense');
   transactionAccount = signal<Account | null>(null);
 
-  // Computed signal: it watches userProfile and updates automatically
-  avatarLetters = computed(() => {
-    const user = this.userProfile();
-
-    if (!user || !user.name) return '??';
-
-    const names = user.name.trim().split(/\s+/);
-    const firstLetter = names[0]?.charAt(0).toUpperCase() || '';
-    const secondLetter = names[1]?.charAt(0).toUpperCase() || '';
-
-    return firstLetter + secondLetter;
-  });
-
   ngOnInit() {
     this.getUserProfile();
     this.loadAccounts();
@@ -55,7 +44,7 @@ export class DashboardComponent implements OnInit {
   getUserProfile() {
     this.authService.getUserProfile().subscribe({
       next: (profile) => {
-        this.userProfile.set(profile);
+        this.headerService.updateHeader('Welcome back,', profile.name);
       },
       error: (err) => {
         console.error('Error fetching profile:', err);
