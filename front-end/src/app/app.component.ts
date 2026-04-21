@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './services/theme.service.spec';
+import { HeaderComponent } from './components/header/header.component';
+import { DrawerComponent } from './components/drawer/drawer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HeaderComponent, DrawerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
