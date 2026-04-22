@@ -99,11 +99,12 @@
       >
         @for (trans of transactions(); track trans._id) {
           <div
+            (click)="openEditTransaction(trans)"
             class="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all cursor-pointer group"
           >
             <div class="flex items-center gap-4">
               <div
-                [class]="trans.category?.color || 'bg-slate-100 text-slate-600'"
+                [class]="trans.category.color || 'bg-slate-100 text-slate-600'"
                 class="w-12 h-12 bg-slate-200 rounded-2xl flex items-center justify-center text-lg"
               >
                 <i
@@ -118,7 +119,7 @@
                 <p
                   class="font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors"
                 >
-                  {{ trans.category?.name }}({{ trans.description }})
+                  {{ trans.category.name }}({{ trans.description }})
                 </p>
                 <p class="text-xs text-slate-500 dark:text-slate-400">
                   {{ trans.date | date: "longDate" }}
@@ -164,6 +165,16 @@
         (close)="showEditModal.set(false)"
         (updated)="handleBalanceUpdate($event)"
       />
+    }
+
+    @if (editTransaction()) {
+      <app-edit-transaction
+        [transaction]="editTransaction()"
+        [categories]="allCategories()"
+        (close)="editTransaction.set(null)"
+        (save)="handleUpdate($event)"
+      >
+      </app-edit-transaction>
     }
   </main>
 </div>
