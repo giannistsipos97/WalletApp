@@ -1,0 +1,71 @@
+<div
+  class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] flex items-center justify-center p-4"
+>
+  <div
+    class="bg-white dark:bg-slate-800 w-full max-w-2xl h-[80vh] rounded-[2.5rem] flex flex-col shadow-2xl border border-slate-100 dark:border-slate-700"
+  >
+    <div class="p-8 pb-4 flex items-center justify-between">
+      <div>
+        <h3 class="text-2xl font-black text-slate-900 dark:text-white">
+          Full History
+        </h3>
+        <p class="text-sm text-slate-500">
+          {{ transactions.length }} total transactions
+        </p>
+      </div>
+      <button
+        (click)="close.emit()"
+        class="w-10 h-10 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-full text-slate-500"
+      >
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-4 pb-8 custom-scrollbar">
+      <div class="space-y-2">
+        @for (trans of transactions; track trans._id) {
+          <div
+            (click)="onEdit(trans)"
+            class="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-3xl transition-all cursor-pointer group"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                [class]="trans.category.color || 'bg-slate-100 text-slate-600'"
+                class="w-12 h-12 bg-slate-200 rounded-2xl flex items-center justify-center text-lg"
+              >
+                <i
+                  class="fa-solid"
+                  [class]="
+                    trans.type === 'income' ? 'fa-wallet' : 'fa-cart-shopping'
+                  "
+                ></i>
+              </div>
+              <div>
+                <p
+                  class="font-bold text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors"
+                >
+                  {{ trans.description }}
+                </p>
+                <p class="text-xs text-slate-500">
+                  {{ trans.date | date: "mediumDate" }} •
+                  {{ trans.category.name }}
+                </p>
+              </div>
+            </div>
+
+            <p
+              [class]="
+                trans.type === 'income' ? 'text-emerald-500' : 'text-red-500'
+              "
+              class="font-black"
+            >
+              {{ trans.type === "income" ? "+" : "-" }}€{{
+                trans.amount | number: "1.2-2"
+              }}
+            </p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

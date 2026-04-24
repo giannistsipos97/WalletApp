@@ -89,7 +89,10 @@
         <h3 class="text-lg font-bold text-slate-900 dark:text-white">
           Recent Transactions
         </h3>
-        <button class="text-emerald-500 text-xs font-bold hover:underline">
+        <button
+          class="text-emerald-500 text-xs font-bold hover:underline"
+          (click)="showAllTransactions.set(true)"
+        >
           See All
         </button>
       </div>
@@ -165,6 +168,15 @@
         (close)="showEditModal.set(false)"
         (updated)="handleBalanceUpdate($event)"
       />
+    }
+
+    @if (showAllTransactions()) {
+      <app-view-all-transactions
+        [transactions]="transactions()"
+        (close)="showAllTransactions.set(false)"
+        (editTransaction)="openEditTransaction($event)"
+      >
+      </app-view-all-transactions>
     }
 
     @if (editTransaction()) {

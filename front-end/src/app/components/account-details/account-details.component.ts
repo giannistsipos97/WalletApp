@@ -10,6 +10,7 @@ import { EditTransactionComponent } from '../edit-transaction/edit-transaction.c
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/Category';
 import { TransactionService } from '../../services/transaction.service';
+import { ViewAllTransactionsComponent } from '../view-all-transactions/view-all-transactions.component';
 
 @Component({
   selector: 'app-account-details',
@@ -20,6 +21,7 @@ import { TransactionService } from '../../services/transaction.service';
     DatePipe,
     EditBalanceModalComponent,
     EditTransactionComponent,
+    ViewAllTransactionsComponent,
   ],
   templateUrl: './account-details.component.html',
   styleUrl: './account-details.component.scss',
@@ -37,6 +39,7 @@ export class AccountDetailsComponent implements OnInit {
   showEditModal = signal(false);
   editTransaction = signal<Transaction | null>(null);
   allCategories = signal<Category[]>([]);
+  showAllTransactions = signal(false);
 
   ngOnInit() {
     this.headerService.updateHeader(
@@ -77,9 +80,18 @@ export class AccountDetailsComponent implements OnInit {
     this.editTransaction.set(transaction);
   }
 
-  handleUpdate(updatedData: any) {
+  handleUpdate(response: any) {
     this.editTransaction.set(null);
-    this.loadDetails(updatedData.account._id);
-    // this.loadTransactions(updatedData.account._id);
+
+    // Update account signal immediately from response to avoid a flicker
+    if (response.account) {
+      this.account.set(response.account);
+    }
+
+    // Refresh everything to ensure summaries and lists are synced
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadDetails(id);
+    }
   }
 }
