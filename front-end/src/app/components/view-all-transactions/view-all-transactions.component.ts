@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Transaction } from '../../models/Transaction';
+import { TransactionListComponent } from '../transaction-list/transaction-list.component';
 
 @Component({
   selector: 'app-view-all-transactions',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TransactionListComponent],
   templateUrl: './view-all-transactions.component.html',
   styleUrl: './view-all-transactions.component.scss',
 })

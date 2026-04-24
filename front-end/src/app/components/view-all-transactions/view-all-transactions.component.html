@@ -21,50 +21,13 @@
       </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto px-4 pb-8 custom-scrollbar">
-      <div class="space-y-2">
-        @for (trans of transactions; track trans._id) {
-          <div
-            (click)="onEdit(trans)"
-            class="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-3xl transition-all cursor-pointer group"
-          >
-            <div class="flex items-center gap-4">
-              <div
-                [class]="trans.category.color || 'bg-slate-100 text-slate-600'"
-                class="w-12 h-12 bg-slate-200 rounded-2xl flex items-center justify-center text-lg"
-              >
-                <i
-                  class="fa-solid"
-                  [class]="
-                    trans.type === 'income' ? 'fa-wallet' : 'fa-cart-shopping'
-                  "
-                ></i>
-              </div>
-              <div>
-                <p
-                  class="font-bold text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors"
-                >
-                  {{ trans.description }}
-                </p>
-                <p class="text-xs text-slate-500">
-                  {{ trans.date | date: "mediumDate" }} •
-                  {{ trans.category.name }}
-                </p>
-              </div>
-            </div>
-
-            <p
-              [class]="
-                trans.type === 'income' ? 'text-emerald-500' : 'text-red-500'
-              "
-              class="font-black"
-            >
-              {{ trans.type === "income" ? "+" : "-" }}€{{
-                trans.amount | number: "1.2-2"
-              }}
-            </p>
-          </div>
-        }
+    <div class="flex-1 overflow-y-auto pb-8 custom-scrollbar">
+      <div class="flex-1 overflow-y-auto px-4 pb-8">
+        <app-transaction-list
+          [transactions]="transactions"
+          (edit)="onEdit($event)"
+        >
+        </app-transaction-list>
       </div>
     </div>
   </div>

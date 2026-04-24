@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { Account } from '../../models/Account';
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Transaction } from '../../models/Transaction';
 import { EditBalanceModalComponent } from '../edit-balance-modal/edit-balance-modal.component';
 import { HeaderService } from '../../services/header.service';
@@ -11,6 +11,7 @@ import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/Category';
 import { TransactionService } from '../../services/transaction.service';
 import { ViewAllTransactionsComponent } from '../view-all-transactions/view-all-transactions.component';
+import { TransactionListComponent } from '../transaction-list/transaction-list.component';
 
 @Component({
   selector: 'app-account-details',
@@ -18,10 +19,10 @@ import { ViewAllTransactionsComponent } from '../view-all-transactions/view-all-
   imports: [
     CommonModule,
     DecimalPipe,
-    DatePipe,
     EditBalanceModalComponent,
     EditTransactionComponent,
     ViewAllTransactionsComponent,
+    TransactionListComponent,
   ],
   templateUrl: './account-details.component.html',
   styleUrl: './account-details.component.scss',
